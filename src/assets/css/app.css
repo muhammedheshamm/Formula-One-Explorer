@@ -5,10 +5,10 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-primary-100: #fefaf6;
-  --color-primary-200: #eadbc8;
-  --color-primary-300: #dac0a3;
-  --color-primary-500: #102c57;
+  --color-primary-100: #eeeeee;
+  --color-primary-200: #d84040;
+  --color-primary-300: #8e1616;
+  --color-primary-500: #1d1616;
 }
 
 html,
