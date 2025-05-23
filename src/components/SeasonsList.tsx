@@ -32,7 +32,7 @@ export const SeasonsList = () => {
         {isError && <Error />}
         {!isLoading && !isError && (
           <>
-            <p className="mt-2">There's {totalItems} Seasons in the list</p>
+            <p className="mt-2 text-gray-600">There's {totalItems} Seasons in the list</p>
 
             <div className={`mt-5 grid gap-4 ${view === 'grid' ? 'grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
               {data?.MRData.SeasonTable.Seasons.map((season: Season) => (

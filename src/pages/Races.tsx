@@ -104,7 +104,7 @@ export default function Races() {
         {isError && <Error />}
         {!isLoading && !isError && (
           <>
-            <p className="mt-2">
+            <p className="mt-2 text-gray-600">
               There's {totalItems} Races in the {seasonParam} season
             </p>
 
