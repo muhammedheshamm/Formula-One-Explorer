@@ -97,7 +97,7 @@ export default function Races() {
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold">Formula 1 Races - Season {seasonParam}</h2>
           <button className="cursor-pointer" onClick={() => setView(view === 'grid' ? 'list' : 'grid')}>
-            {view === 'grid' ? <LayoutGrid className="h-7 w-7" /> : <Rows3 className="h-7 w-7" />}
+            {view === 'list' ? <LayoutGrid className="h-7 w-7" /> : <Rows3 className="h-7 w-7" />}
           </button>
         </div>
         {isLoading && <LoadingRacesList layout={view} count={pageSize} />}
@@ -112,18 +112,23 @@ export default function Races() {
               {racesToDisplay.map((race: Race) => (
                 <div
                   key={`${race.season}-${race.round}`}
-                  className={`p-4 rounded-lg bg-white shadow-custom transition-shadow ${
+                  className={`flex flex-col justify-between p-4 rounded-lg bg-white shadow-custom transition-shadow ${
                     isRacePinned(race) ? 'border-2 border-primary-200' : ''
                   }`}
                 >
                   <div className="flex justify-between items-start">
                     <div>
-                      <h3 className="text-xl font-semibold">{race.raceName}</h3>
+                      <h3 className="md:text-xl font-semibold">{race.raceName}</h3>
                       <p className="text-sm text-gray-600">
                         {race.Circuit.circuitName}, {race.Circuit.Location.country}
                       </p>
                       <p className="text-sm text-gray-600">
-                        Date: {new Date(race.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                        Date:{' '}
+                        {new Date(race.date).toLocaleDateString('en-US', {
+                          month: 'long',
+                          day: 'numeric',
+                          year: 'numeric',
+                        })}
                       </p>
                     </div>
                     <button

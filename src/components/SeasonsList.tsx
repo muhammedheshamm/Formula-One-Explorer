@@ -25,7 +25,7 @@ export const SeasonsList = () => {
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold">Formula 1 Seasons</h2>
           <button className="cursor-pointer" onClick={() => setView(view === 'grid' ? 'list' : 'grid')}>
-            {view === 'grid' ? <LayoutGrid className="h-7 w-7" /> : <Rows3 className="h-7 w-7" />}
+            {view === 'list' ? <LayoutGrid className="h-7 w-7" /> : <Rows3 className="h-7 w-7" />}
           </button>
         </div>
         {isLoading && <LoadingSeasonsList layout={view} count={pageSize} />}
