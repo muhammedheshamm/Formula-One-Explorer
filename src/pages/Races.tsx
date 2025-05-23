@@ -102,7 +102,10 @@ export default function Races() {
         </div>
         {isLoading && <LoadingRacesList layout={view} count={pageSize} />}
         {isError && <Error />}
-        {!isLoading && !isError && (
+        {!isLoading && !isError && !racesToDisplay.length && (
+          <h2 className="text-2xl font-bold text-gray-500 mt-40 text-center">No Races Found</h2>
+        )}
+        {!isLoading && !isError && racesToDisplay.length && (
           <>
             <p className="mt-2 text-gray-600">
               There's {totalItems} Races in the {seasonParam} season
