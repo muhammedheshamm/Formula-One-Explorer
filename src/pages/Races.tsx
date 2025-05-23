@@ -122,7 +122,9 @@ export default function Races() {
                       <p className="text-sm text-gray-600">
                         {race.Circuit.circuitName}, {race.Circuit.Location.country}
                       </p>
-                      <p className="text-sm text-gray-600">Date: {new Date(race.date).toLocaleDateString()}</p>
+                      <p className="text-sm text-gray-600">
+                        Date: {new Date(race.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                      </p>
                     </div>
                     <button
                       onClick={() => togglePinRace(race)}
