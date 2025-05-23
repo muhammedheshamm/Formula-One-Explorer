@@ -31,6 +31,10 @@ body {
   -ms-overflow-style: none;
 }
 
+.rotate-22 {
+  rotate: 22deg;
+}
+
 .shadow-custom {
   box-shadow: 0 0 70px -20px rgba(53, 53, 53, 0.2);
 }

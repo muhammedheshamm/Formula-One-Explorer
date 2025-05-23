@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search } from 'lucide-react';
+import { Crown, Search } from 'lucide-react';
 import type { RaceResult } from '../types/formulaOne';
 
 interface ParticipatingDriversProps {
@@ -107,7 +107,12 @@ export const ParticipatingDrivers = ({ results }: ParticipatingDriversProps) => 
               >
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{result.position}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm">
-                  {highlightText(`${result.Driver.givenName} ${result.Driver.familyName}`)}
+                  <span className="relative">
+                    {highlightText(`${result.Driver.givenName} ${result.Driver.familyName}`)}
+                    {result.position === '1' && (
+                      <Crown className="absolute -top-3.5 -right-3 rotate-22 text-yellow-500 w-5 h-5" />
+                    )}
+                  </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm">{result.Driver.nationality}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm">{result.Constructor.name}</td>
