@@ -105,10 +105,10 @@ export default function Races() {
         {!isLoading && !isError && !racesToDisplay.length && (
           <h2 className="text-2xl font-bold text-gray-500 mt-40 text-center">No Races Found</h2>
         )}
-        {!isLoading && !isError && racesToDisplay.length && (
+        {!isLoading && !isError && racesToDisplay.length > 0 && (
           <>
             <p className="mt-2 text-gray-600">
-              There's {totalItems} Races in the {seasonParam} season
+              There's {racesToDisplay.length} Races in the {seasonParam} season
             </p>
 
             <div className={`mt-5 grid gap-4 ${view === 'grid' ? 'grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
