@@ -22,8 +22,8 @@ export function Pagination({ totalItems, itemsPerPage, currentPage, onPageChange
   );
 
   const pages = getVisiblePages();
-  const showStartEllipsis = pages[0] > 4;
-  const showEndEllipsis = pages[pages.length - 1] < totalPages - 1;
+  const showStartEllipsis = pages[0] > 1;
+  const showEndEllipsis = pages[pages.length - 1] < totalPages;
 
   return (
     <nav role="navigation" aria-label="Pagination" className={cn('mx-auto flex w-full justify-center', className)}>
