@@ -14,7 +14,7 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: 'season/:season',
+        path: 'seasons/:season',
         element: <Races />,
       },
       {
