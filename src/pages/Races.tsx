@@ -87,70 +87,134 @@ export default function Races() {
   const racesToDisplay = getRacesToDisplay();
 
   return (
-    <div id="races-list" className="py-16">
+    <div id="races-list" className="py-16 bg-gray-50">
       <div className="container">
-        <Link to="/" className="flex items-center font-medium text-primary-200 hover:text-primary-300 mb-4 w-fit">
-          <ChevronLeft className="inline-block mr-1" />
+        <Link to="/" className="flex items-center font-medium text-primary-200 hover:text-primary-300 mb-6 w-fit group">
+          <ChevronLeft className="inline-block mr-1 group-hover:-translate-x-1 transition-transform" />
           Back to Seasons List
         </Link>
 
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold">Formula 1 Races - Season {seasonParam}</h2>
-          <button className="cursor-pointer" onClick={() => setView(view === 'grid' ? 'list' : 'grid')}>
-            {view === 'list' ? <LayoutGrid className="h-7 w-7" /> : <Rows3 className="h-7 w-7" />}
-          </button>
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
+          <div>
+            <h2 className="text-3xl font-bold text-gray-800">
+              <span className="text-primary-200">Season {seasonParam}</span> Races
+            </h2>
+            <p className="mt-2 text-gray-600">
+              {!isLoading &&
+                !isError &&
+                racesToDisplay.length > 0 &&
+                `Explore ${racesToDisplay.length} races from the ${seasonParam} championship`}
+            </p>
+          </div>
+          <div className="mt-4 md:mt-0 flex items-center space-x-4">
+            <span className="text-sm text-gray-500">View:</span>
+            <div className="flex bg-white rounded-md shadow-sm p-1">
+              <button
+                className={`p-2 rounded-md transition-colors ${
+                  view === 'grid' ? 'bg-primary-200 text-white' : 'text-gray-500 hover:bg-gray-100'
+                }`}
+                onClick={() => setView('grid')}
+                aria-label="Grid view"
+              >
+                <LayoutGrid className="h-5 w-5" />
+              </button>
+              <button
+                className={`p-2 rounded-md transition-colors ${
+                  view === 'list' ? 'bg-primary-200 text-white' : 'text-gray-500 hover:bg-gray-100'
+                }`}
+                onClick={() => setView('list')}
+                aria-label="List view"
+              >
+                <Rows3 className="h-5 w-5" />
+              </button>
+            </div>
+          </div>
         </div>
+
         {isLoading && <LoadingRacesList layout={view} count={pageSize} />}
         {isError && <Error />}
         {!isLoading && !isError && !racesToDisplay.length && (
-          <h2 className="text-2xl font-bold text-gray-500 mt-40 text-center">No Races Found</h2>
+          <div className="bg-white rounded-xl p-10 text-center shadow-sm">
+            <h2 className="text-2xl font-bold text-gray-500">No Races Found</h2>
+            <p className="mt-2 text-gray-400">There are no races available for this season.</p>
+          </div>
         )}
+
         {!isLoading && !isError && racesToDisplay.length > 0 && (
           <>
-            <p className="mt-2 text-gray-600">
-              There's {racesToDisplay.length} Races in the {seasonParam} season
-            </p>
-
-            <div className={`mt-5 grid gap-4 ${view === 'grid' ? 'grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
-              {racesToDisplay.map((race: Race) => (
-                <div
-                  key={`${race.season}-${race.round}`}
-                  className={`flex flex-col justify-between p-4 rounded-lg bg-white shadow-custom transition-shadow ${
-                    isRacePinned(race) ? 'border-2 border-primary-200' : ''
-                  }`}
-                >
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="md:text-xl font-semibold">{race.raceName}</h3>
-                      <p className="text-sm text-gray-600">
-                        {race.Circuit.circuitName}, {race.Circuit.Location.country}
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        Date:{' '}
-                        {new Date(race.date).toLocaleDateString('en-US', {
-                          month: 'long',
-                          day: 'numeric',
-                          year: 'numeric',
-                        })}
-                      </p>
-                    </div>
-                    <button
-                      onClick={() => togglePinRace(race)}
-                      className="text-primary-200 hover:text-primary-300"
-                      aria-label={isRacePinned(race) ? 'Unpin race' : 'Pin race'}
-                    >
-                      {isRacePinned(race) ? <PinOff className="h-5 w-5" /> : <Pin className="h-5 w-5" />}
-                    </button>
-                  </div>
-                  <Link
-                    to={`/races/${race.season}/${race.round}`}
-                    className="text-primary-200 hover:text-primary-300 flex items-center mt-2 w-fit"
+            <div
+              className={`grid gap-3 md:gap-5 ${
+                view === 'grid' ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4' : 'grid-cols-1'
+              }`}
+            >
+              {racesToDisplay.map((race: Race) => {
+                return (
+                  <div
+                    key={`${race.season}-${race.round}`}
+                    className={`group relative rounded-xl bg-white shadow-sm hover:shadow-md transform hover:-translate-y-1 transition-shadow transition-transform ${
+                      isRacePinned(race) ? 'border border-primary-200' : 'border border-gray-200'
+                    }`}
                   >
-                    View Details
-                    <ChevronRight className="inline-block ml-1" />
-                  </Link>
-                </div>
-              ))}
+                    {/* round badge */}
+                    <div className="absolute -top-3 -right-3 bg-primary-200 text-white text-sm font-bold rounded-full h-8 w-8 flex items-center justify-center shadow-sm">
+                      {race.round}
+                    </div>
+
+                    <div className="p-3 md:p-5 h-full">
+                      <div className="flex flex-col justify-between h-full">
+                        <div>
+                          <div className="flex justify-between gap-3 mb-3">
+                            <Link
+                              to={`/races/${race.season}/${race.round}`}
+                              className="md:text-xl font-bold text-gray-800 hover:text-primary-200 transition-colors"
+                            >
+                              {race.raceName}
+                            </Link>
+
+                            <button
+                              onClick={() => togglePinRace(race)}
+                              className={`p-2 cursor-pointer rounded-full flex-shrink-0 w-8 h-8 flex items-center justify-center ${
+                                isRacePinned(race)
+                                  ? 'bg-primary-200 text-white hover:bg-primary-300'
+                                  : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                              }`}
+                              aria-label={isRacePinned(race) ? 'Unpin race' : 'Pin race'}
+                            >
+                              {isRacePinned(race) ? <PinOff className="h-5 w-5" /> : <Pin className="h-5 w-5" />}
+                            </button>
+                          </div>
+
+                          <div className="mt-3 flex items-start space-x-2">
+                            <div className="flex-shrink-0 mt-0.5">
+                              <div className="h-2 w-2 rounded-full bg-primary-200"></div>
+                            </div>
+                            <p className="text-sm text-gray-600">
+                              {race.Circuit.circuitName}, {race.Circuit.Location.country}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
+                          <div className="text-sm text-gray-600">
+                            {new Date(race.date).toLocaleDateString('en-US', {
+                              month: 'long',
+                              day: 'numeric',
+                              year: 'numeric',
+                            })}
+                          </div>
+                          <Link
+                            to={`/races/${race.season}/${race.round}`}
+                            className="bg-gray-100 p-2 hover:bg-primary-200 hover:*:text-white rounded-full transition-colors"
+                            aria-label={`View details for ${race.raceName}`}
+                          >
+                            <ChevronRight className="h-4 w-4 text-primary-200" />
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
 
             <Pagination
