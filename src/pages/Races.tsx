@@ -52,8 +52,8 @@ export default function Races() {
         pinnedRace => !(pinnedRace.round === race.round && pinnedRace.season === race.season)
       );
     } else {
-      // add race to pinned races
-      updatedPinnedRaces = [...pinnedRaces, race];
+      // add race to pinned races at the beginning of the array
+      updatedPinnedRaces = [race, ...pinnedRaces];
     }
 
     setPinnedRaces(updatedPinnedRaces);
