@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { getRaces, getSeasons } from '../services/formulaOneApi';
-import type { PaginationParams, RacesParams } from '../types/formulaOne';
+import { getRaceResults, getRaces, getSeasons } from '../services/formulaOneApi';
+import type { PaginationParams, RaceResultsParams, RacesParams } from '../types/formulaOne';
 
 export const useSeasons = (params: PaginationParams) => {
   return useQuery({
@@ -13,5 +13,12 @@ export const useRaces = (params: RacesParams) => {
   return useQuery({
     queryKey: ['races', params],
     queryFn: () => getRaces(params),
+  });
+};
+
+export const useRaceResults = (params: RaceResultsParams) => {
+  return useQuery({
+    queryKey: ['raceResults', params],
+    queryFn: () => getRaceResults(params),
   });
 };
