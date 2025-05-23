@@ -3,12 +3,15 @@ import { useState, useEffect } from 'react';
 import { useRaces } from '../hooks/useFormulaOne';
 import type { Race } from '../types/formulaOne';
 import { Pagination } from '../components/ui/pagination';
-import { Rows3, LayoutGrid, ChevronRight, ChevronLeft, Pin, PinOff } from 'lucide-react';
+import { Rows3, LayoutGrid, ChevronLeft, Pin } from 'lucide-react';
 import Error from '../components/ui/Error';
 import { LoadingRacesList } from '../components/loading/LoadingRacesList';
+import { RaceCard } from '../components/RaceCard';
 
 const pageSize = 12;
 const pinnedRacesKey = 'pinnedRaces';
+
+
 
 export default function Races() {
   const { season: seasonParam } = useParams<{ season: string }>();
@@ -75,16 +78,13 @@ export default function Races() {
     return pinnedRaces.some(pinnedRace => pinnedRace.round === race.round && pinnedRace.season === race.season);
   };
 
-  // combine pinned races with regular races, making pinned races appear at the top
-  const getRacesToDisplay = () => {
+  // Get regular races (not pinned)
+  const getRegularRaces = () => {
     if (!data?.MRData.RaceTable.Races) return [];
-
-    const regularRaces = data.MRData.RaceTable.Races.filter(race => !isRacePinned(race));
-
-    return [...pinnedRaces, ...regularRaces];
+    return data.MRData.RaceTable.Races.filter(race => !isRacePinned(race));
   };
 
-  const racesToDisplay = getRacesToDisplay();
+  const regularRaces = getRegularRaces();
 
   return (
     <div id="races-list" className="py-16 bg-gray-50">
@@ -102,8 +102,8 @@ export default function Races() {
             <p className="mt-2 text-gray-600">
               {!isLoading &&
                 !isError &&
-                racesToDisplay.length > 0 &&
-                `Explore ${racesToDisplay.length} races from the ${seasonParam} championship`}
+                (pinnedRaces.length > 0 || regularRaces.length > 0) &&
+                `Explore ${pinnedRaces.length + regularRaces.length} races from the ${seasonParam} championship`}
             </p>
           </div>
           <div className="mt-4 md:mt-0 flex items-center space-x-4">
@@ -133,89 +133,51 @@ export default function Races() {
 
         {isLoading && <LoadingRacesList layout={view} count={pageSize} />}
         {isError && <Error />}
-        {!isLoading && !isError && !racesToDisplay.length && (
+        {!isLoading && !isError && !regularRaces.length && pinnedRaces.length === 0 && (
           <div className="bg-white rounded-xl p-10 text-center shadow-sm">
             <h2 className="text-2xl font-bold text-gray-500">No Races Found</h2>
             <p className="mt-2 text-gray-400">There are no races available for this season.</p>
           </div>
         )}
 
-        {!isLoading && !isError && racesToDisplay.length > 0 && (
+        {!isLoading && !isError && (pinnedRaces.length > 0 || regularRaces.length > 0) && (
           <>
-            <div
-              className={`grid gap-3 md:gap-5 ${
-                view === 'grid' ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4' : 'grid-cols-1'
-              }`}
-            >
-              {racesToDisplay.map((race: Race) => {
-                return (
-                  <div
-                    key={`${race.season}-${race.round}`}
-                    className={`group relative rounded-xl bg-white shadow-sm hover:shadow-md transform hover:-translate-y-1 transition-shadow transition-transform ${
-                      isRacePinned(race) ? 'border border-primary-200' : 'border border-gray-200'
-                    }`}
-                  >
-                    {/* round badge */}
-                    <div className="absolute -top-3 -right-3 bg-primary-200 text-white text-sm font-bold rounded-full h-8 w-8 flex items-center justify-center shadow-sm">
-                      {race.round}
-                    </div>
-
-                    <div className="p-3 md:p-5 h-full">
-                      <div className="flex flex-col justify-between h-full">
-                        <div>
-                          <div className="flex justify-between gap-3 mb-3">
-                            <Link
-                              to={`/races/${race.season}/${race.round}`}
-                              className="md:text-xl font-bold text-gray-800 hover:text-primary-200 transition-colors"
-                            >
-                              {race.raceName}
-                            </Link>
-
-                            <button
-                              onClick={() => togglePinRace(race)}
-                              className={`p-2 cursor-pointer rounded-full flex-shrink-0 w-8 h-8 flex items-center justify-center ${
-                                isRacePinned(race)
-                                  ? 'bg-primary-200 text-white hover:bg-primary-300'
-                                  : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
-                              }`}
-                              aria-label={isRacePinned(race) ? 'Unpin race' : 'Pin race'}
-                            >
-                              {isRacePinned(race) ? <PinOff className="h-5 w-5" /> : <Pin className="h-5 w-5" />}
-                            </button>
-                          </div>
-
-                          <div className="mt-3 flex items-start space-x-2">
-                            <div className="flex-shrink-0 mt-0.5">
-                              <div className="h-2 w-2 rounded-full bg-primary-200"></div>
-                            </div>
-                            <p className="text-sm text-gray-600">
-                              {race.Circuit.circuitName}, {race.Circuit.Location.country}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
-                          <div className="text-sm text-gray-600">
-                            {new Date(race.date).toLocaleDateString('en-US', {
-                              month: 'long',
-                              day: 'numeric',
-                              year: 'numeric',
-                            })}
-                          </div>
-                          <Link
-                            to={`/races/${race.season}/${race.round}`}
-                            className="bg-gray-100 p-2 hover:bg-primary-200 hover:*:text-white rounded-full transition-colors"
-                            aria-label={`View details for ${race.raceName}`}
-                          >
-                            <ChevronRight className="h-4 w-4 text-primary-200" />
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+            {/* Pinned Races Section */}
+            {pinnedRaces.length > 0 && (
+              <div className="mb-8">
+                <h3 className="text-xl font-bold mb-4 flex items-center">
+                  <Pin className="h-5 w-5 text-primary-200 mr-2" />
+                  Pinned Races
+                </h3>
+                <div
+                  className={`grid gap-3 md:gap-5 ${
+                    view === 'grid' ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4' : 'grid-cols-1'
+                  }`}
+                >
+                  {pinnedRaces.map((race: Race) => (
+                    <RaceCard key={`${race.season}-${race.round}`} race={race} togglePinRace={togglePinRace} isRacePinned={isRacePinned} />
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {/* Regular Races Section */}
+            {regularRaces.length > 0 && (
+              <div>
+                {pinnedRaces.length > 0 && (
+                  <h3 className="text-xl font-bold mb-4">All Races</h3>
+                )}
+                <div
+                  className={`grid gap-3 md:gap-5 ${
+                    view === 'grid' ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4' : 'grid-cols-1'
+                  }`}
+                >
+                  {regularRaces.map((race: Race) => (
+                    <RaceCard key={`${race.season}-${race.round}`} race={race} togglePinRace={togglePinRace} isRacePinned={isRacePinned} />
+                  ))}
+                </div>
+              </div>
+            )}
 
             <Pagination
               className="mt-10"
