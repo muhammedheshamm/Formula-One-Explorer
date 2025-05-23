@@ -40,7 +40,7 @@ export const ParticipatingDrivers = ({ results }: ParticipatingDriversProps) => 
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-custom p-6">
+    <div>
       <h2 className="text-2xl font-bold mb-4">Participating Drivers</h2>
 
       <div className="relative">
@@ -57,53 +57,53 @@ export const ParticipatingDrivers = ({ results }: ParticipatingDriversProps) => 
       </div>
       <p className="mt-2 text-sm text-gray-500">Type to search and highlight drivers in the list</p>
 
-      <div className="overflow-x-auto mt-6">
+      <div className="overflow-x-auto mt-6 px-0">
         <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+          <thead>
             <tr>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider"
               >
                 Position
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider"
               >
                 Driver
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider"
               >
                 Nationality
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider"
               >
                 Team
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider"
               >
                 Status
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider"
               >
                 Time
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-200">
             {results?.map((result: RaceResult) => (
               <tr
                 key={result.Driver.driverId}
-                className={`hover:bg-gray-50 ${isDriverHighlighted(result) ? 'bg-gray-100 hover:bg-gray-100' : ''}`}
+                className={`hover:bg-gray-100 ${isDriverHighlighted(result) ? 'bg-gray-200 hover:bg-gray-200' : ''}`}
               >
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{result.position}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm">

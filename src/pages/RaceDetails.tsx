@@ -57,7 +57,7 @@ export default function RaceDetails() {
           </div>
 
           <div className="border-b border-gray-200">
-            <nav className="-mb-px flex space-x-8">
+            <nav className="-mb-px flex space-x-8 overflow-x-auto scrollbar-hidden">
               <button
                 onClick={() => setActiveTab('drivers')}
                 className={`${

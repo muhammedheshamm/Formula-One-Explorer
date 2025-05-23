@@ -26,6 +26,11 @@ body {
   padding-inline: 1.25rem;
 }
 
+.scrollbar-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
 .shadow-custom {
   box-shadow: 0 0 70px -20px rgba(53, 53, 53, 0.2);
 }
