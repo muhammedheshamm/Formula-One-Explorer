@@ -4,7 +4,7 @@ import { useRaces } from '../hooks/useFormulaOne';
 import type { Race } from '../types/formulaOne';
 import { Pagination } from '../components/ui/pagination';
 import { Rows3, LayoutGrid, ChevronRight, ChevronLeft, Pin, PinOff } from 'lucide-react';
-import Error from '../components/ui/error';
+import Error from '../components/ui/Error';
 import { LoadingRacesList } from '../components/loading/LoadingRacesList';
 
 const pageSize = 12;

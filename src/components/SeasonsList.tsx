@@ -4,7 +4,7 @@ import type { Season } from '../types/formulaOne';
 import { Pagination } from './ui/pagination';
 import { Link } from 'react-router-dom';
 import { Rows3, LayoutGrid, ChevronRight } from 'lucide-react';
-import Error from './ui/error';
+import Error from './ui/Error';
 import { LoadingSeasonsList } from './loading/LoadingSeasonsList';
 
 const pageSize = 12;
