@@ -25,9 +25,9 @@ export default function RaceDetails() {
     <div className="container py-16">
       <Link
         to={`/seasons/${season}`}
-        className="flex items-center font-medium text-primary-200 hover:text-primary-300 mb-6 w-fit"
+        className="flex items-center font-medium text-primary-200 hover:text-primary-300 mb-6 w-fit group"
       >
-        <ChevronLeft className="inline-block mr-1" />
+        <ChevronLeft className="inline-block mr-1 group-hover:-translate-x-1 transition-transform stroke-1" />
         Back to Season Races
       </Link>
 

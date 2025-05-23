@@ -90,7 +90,7 @@ export default function Races() {
     <div id="races-list" className="py-16 bg-gray-50">
       <div className="container">
         <Link to="/" className="flex items-center font-medium text-primary-200 hover:text-primary-300 mb-6 w-fit group">
-          <ChevronLeft className="inline-block mr-1 group-hover:-translate-x-1 transition-transform" />
+          <ChevronLeft className="inline-block mr-1 group-hover:-translate-x-1 transition-transform stroke-1" />
           Back to Seasons List
         </Link>
 
