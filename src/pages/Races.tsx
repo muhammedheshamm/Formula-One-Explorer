@@ -1,10 +1,9 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useRaces } from '../hooks/useFormulaOne';
 import type { Race } from '../types/formulaOne';
 import { Pagination } from '../components/ui/pagination';
-import { Link } from 'react-router-dom';
-import { Rows3, LayoutGrid, ChevronRight, Pin, PinOff } from 'lucide-react';
+import { Rows3, LayoutGrid, ChevronRight, ChevronLeft, Pin, PinOff } from 'lucide-react';
 import Error from '../components/ui/error';
 import { LoadingRacesList } from '../components/loading/LoadingRacesList';
 
@@ -90,6 +89,11 @@ export default function Races() {
   return (
     <div id="races-list" className="py-16">
       <div className="container">
+        <Link to="/" className="flex items-center font-medium text-primary-200 hover:text-primary-300 mb-4 w-fit">
+          <ChevronLeft className="inline-block mr-1" />
+          Back to Seasons List
+        </Link>
+
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold">Formula 1 Races - Season {seasonParam}</h2>
           <button className="cursor-pointer" onClick={() => setView(view === 'grid' ? 'list' : 'grid')}>
