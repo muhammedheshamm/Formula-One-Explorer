@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useRaceResults } from '../hooks/useFormulaOne';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Crown } from 'lucide-react';
 import Error from '../components/ui/Error';
 import { LoadingRaceDetails } from '../components/loading/LoadingRaceDetails';
 import { ParticipatingDrivers } from '../components/ParticipatingDrivers';
@@ -41,11 +41,16 @@ export default function RaceDetails() {
       )}
 
       {!isLoading && !isError && race && (
-        <div className="space-y-8">
+        <div className="space-y-4">
           <div>
-            <h1 className="text-3xl font-bold">
-              {race.raceName} - {race.season}
-            </h1>
+            <div className="flex items-center gap-2 md:gap-4">
+              <h1 className="text-3xl font-bold">
+                {race.raceName} - {race.season}
+              </h1>
+              <span className="bg-primary-200 text-white text-sm font-medium px-2.5 py-0.5 rounded whitespace-nowrap">
+                Round {race.round}
+              </span>
+            </div>
             <p className="text-gray-600 mt-2">
               {race.Circuit.circuitName}, {race.Circuit.Location.locality}, {race.Circuit.Location.country} |{' '}
               {new Date(race.date).toLocaleDateString('en-US', {
@@ -54,17 +59,36 @@ export default function RaceDetails() {
                 year: 'numeric',
               })}
             </p>
+
+            {/* Winner information */}
+            {results && results.length > 0 && (
+              <div className="mt-4 flex items-center bg-white rounded-lg p-4 border border-gray-100">
+                <div className="mr-3">
+                  <Crown className="h-8 w-8 text-yellow-500" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg">
+                    {results.find(r => r.position === '1')?.Driver.givenName}{' '}
+                    {results.find(r => r.position === '1')?.Driver.familyName}
+                  </h3>
+                  <p className="text-gray-600">
+                    Winner | {results.find(r => r.position === '1')?.Constructor.name} | {''}
+                    {results.find(r => r.position === '1')?.Time?.time || 'No time recorded'}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="border-b border-gray-200">
-            <nav className="-mb-px flex space-x-8 overflow-x-auto scrollbar-hidden">
+            <nav className="-mb-px flex overflow-x-auto scrollbar-hidden">
               <button
                 onClick={() => setActiveTab('drivers')}
                 className={`${
                   activeTab === 'drivers'
                     ? 'border-primary-200 text-primary-200'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+                } whitespace-nowrap py-4 px-4 border-b-2 font-medium text-sm`}
               >
                 Participating Drivers
               </button>
@@ -74,7 +98,7 @@ export default function RaceDetails() {
                   activeTab === 'performance'
                     ? 'border-primary-200 text-primary-200'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+                } whitespace-nowrap py-4 px-4 border-b-2 font-medium text-sm`}
               >
                 Performance Visualization
               </button>
