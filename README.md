@@ -2,6 +2,8 @@
 
 A modern, interactive web application for exploring Formula One racing data, including historical seasons, races, drivers, and teams. Built with React, TypeScript, and Vite.
 
+**Live Demo**: [https://formula-one-explorer-zeta.vercel.app/](https://formula-one-explorer-zeta.vercel.app/)
+
 ## Features
 
 - Browse all Formula One seasons from 1950 to present
