@@ -7,7 +7,9 @@ export default function ErrorBoundary() {
   return (
     <div className="mt-20">
       {isRouteErrorResponse(error) ? (
-        <Error message={error.data?.message || "Sorry, the page you're looking for doesn't exist or has been moved."} />
+        <Error
+          message={error.data?.message || "Sorry, the page you're looking for doesn't exist or has been removed."}
+        />
       ) : (
         <Error />
       )}
