@@ -1,7 +1,5 @@
 # Formula One Explorer
 
-![Formula One Explorer](./src/assets/logo.svg)
-
 A modern, interactive web application for exploring Formula One racing data, including historical seasons, races, drivers, and teams. Built with React, TypeScript, and Vite.
 
 ## Features
