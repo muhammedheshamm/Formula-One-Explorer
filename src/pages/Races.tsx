@@ -1,4 +1,4 @@
-import { useParams, Link, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useRaces } from '../hooks/useFormulaOne';
 import type { Race } from '../types/formulaOne';
@@ -11,28 +11,30 @@ import { RaceCard } from '../components/RaceCard';
 const pageSize = 12;
 const pinnedRacesKey = 'pinnedRaces';
 
-
-
 export default function Races() {
   const { season: seasonParam } = useParams<{ season: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
-  
+  const navigate = useNavigate();
+
   // Get initial values from URL parameters or use defaults
   const initialPage = parseInt(searchParams.get('page') || '1');
   const initialView = (searchParams.get('view') as 'grid' | 'list') || 'grid';
-  
+
   const [page, setPage] = useState(initialPage);
   const [view, setView] = useState<'grid' | 'list'>(initialView);
   const [pinnedRaces, setPinnedRaces] = useState<Race[]>([]);
-  
+
   // Update URL when page or view changes
   useEffect(() => {
-    setSearchParams(prev => {
-      const newParams = new URLSearchParams(prev);
-      newParams.set('page', page.toString());
-      newParams.set('view', view);
-      return newParams;
-    });
+    setSearchParams(
+      prev => {
+        const newParams = new URLSearchParams(prev);
+        newParams.set('page', page.toString());
+        newParams.set('view', view);
+        return newParams;
+      },
+      { replace: true }
+    ); // Replace current history entry instead of adding a new one
   }, [page, view, setSearchParams]);
 
   const { data, isLoading, isError } = useRaces({
@@ -104,10 +106,15 @@ export default function Races() {
   return (
     <div id="races-list" className="py-16 bg-gray-50">
       <div className="container">
-        <Link to="/" className="flex items-center font-medium text-primary-200 hover:text-primary-300 mb-6 w-fit group">
+        <button
+          onClick={() => {
+            navigate(-1);
+          }}
+          className="flex cursor-pointer items-center font-medium text-primary-200 hover:text-primary-300 mb-6 w-fit group"
+        >
           <ChevronLeft className="inline-block mr-1 group-hover:-translate-x-1 transition-transform stroke-1" />
           Back to Seasons List
-        </Link>
+        </button>
 
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
           <div>
@@ -174,25 +181,33 @@ export default function Races() {
                   }`}
                 >
                   {pinnedRaces.map((race: Race) => (
-                    <RaceCard key={`${race.season}-${race.round}`} race={race} togglePinRace={togglePinRace} isRacePinned={isRacePinned} />
+                    <RaceCard
+                      key={`${race.season}-${race.round}`}
+                      race={race}
+                      togglePinRace={togglePinRace}
+                      isRacePinned={isRacePinned}
+                    />
                   ))}
                 </div>
               </div>
             )}
-            
+
             {/* Regular Races Section */}
             {regularRaces.length > 0 && (
               <div>
-                {pinnedRaces.length > 0 && (
-                  <h3 className="text-xl font-bold mb-4">All Races</h3>
-                )}
+                {pinnedRaces.length > 0 && <h3 className="text-xl font-bold mb-4">All Races</h3>}
                 <div
                   className={`grid gap-3 md:gap-5 ${
                     view === 'grid' ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4' : 'grid-cols-1'
                   }`}
                 >
                   {regularRaces.map((race: Race) => (
-                    <RaceCard key={`${race.season}-${race.round}`} race={race} togglePinRace={togglePinRace} isRacePinned={isRacePinned} />
+                    <RaceCard
+                      key={`${race.season}-${race.round}`}
+                      race={race}
+                      togglePinRace={togglePinRace}
+                      isRacePinned={isRacePinned}
+                    />
                   ))}
                 </div>
               </div>

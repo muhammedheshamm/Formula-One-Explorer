@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useRaceResults } from '../hooks/useFormulaOne';
 import { ChevronLeft, Crown } from 'lucide-react';
 import Error from '../components/ui/Error';
@@ -12,6 +12,7 @@ type TabType = 'drivers' | 'performance';
 export default function RaceDetails() {
   const { season, round } = useParams<{ season: string; round: string }>();
   const [activeTab, setActiveTab] = useState<TabType>('drivers');
+  const navigate = useNavigate();
 
   const { data, isLoading, isError } = useRaceResults({
     season: season || '',
@@ -23,13 +24,13 @@ export default function RaceDetails() {
 
   return (
     <div className="container py-16">
-      <Link
-        to={`/seasons/${season}`}
-        className="flex items-center font-medium text-primary-200 hover:text-primary-300 mb-6 w-fit group"
+      <button
+        onClick={() => navigate(-1)}
+        className="flex cursor-pointer items-center font-medium text-primary-200 hover:text-primary-300 mb-6 w-fit group"
       >
         <ChevronLeft className="inline-block mr-1 group-hover:-translate-x-1 transition-transform stroke-1" />
         Back to Season Races
-      </Link>
+      </button>
 
       {isLoading && <LoadingRaceDetails />}
       {isError && <Error />}

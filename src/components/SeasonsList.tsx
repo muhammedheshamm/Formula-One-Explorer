@@ -29,7 +29,7 @@ export const SeasonsList = () => {
       newParams.set('page', page.toString());
       newParams.set('view', view);
       return newParams;
-    });
+    }, { replace: true }); // Replace current history entry instead of adding a new one
   }, [page, view, setSearchParams]);
 
   const totalItems = parseInt(data?.MRData.total || '0');
