@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSeasons } from '../hooks/useFormulaOne';
 import type { Season } from '../types/formulaOne';
 import { Pagination } from './ui/pagination';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Rows3, LayoutGrid, ChevronRight } from 'lucide-react';
 import Error from './ui/Error';
 import { LoadingSeasonsList } from './loading/LoadingSeasonsList';
@@ -10,12 +10,27 @@ import { LoadingSeasonsList } from './loading/LoadingSeasonsList';
 const pageSize = 12;
 
 export const SeasonsList = () => {
-  const [page, setPage] = useState(1);
-  const [view, setView] = useState<'grid' | 'list'>('grid');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialPage = parseInt(searchParams.get('page') || '1');
+  const initialView = (searchParams.get('view') as 'grid' | 'list') || 'grid';
+
+  const [page, setPage] = useState(initialPage);
+  const [view, setView] = useState<'grid' | 'list'>(initialView);
+
   const { data, isLoading, isError } = useSeasons({
     limit: pageSize,
     offset: (page - 1) * pageSize,
   });
+
+  // Update URL when page or view changes
+  useEffect(() => {
+    setSearchParams(prev => {
+      const newParams = new URLSearchParams(prev);
+      newParams.set('page', page.toString());
+      newParams.set('view', view);
+      return newParams;
+    });
+  }, [page, view, setSearchParams]);
 
   const totalItems = parseInt(data?.MRData.total || '0');
 
@@ -41,7 +56,9 @@ export const SeasonsList = () => {
                 className={`p-2 rounded-md transition-colors ${
                   view === 'grid' ? 'bg-primary-200 text-white' : 'text-gray-500 hover:bg-gray-100'
                 }`}
-                onClick={() => setView('grid')}
+                onClick={() => {
+                  setView('grid');
+                }}
                 aria-label="Grid view"
               >
                 <LayoutGrid className="h-5 w-5" />
@@ -50,7 +67,9 @@ export const SeasonsList = () => {
                 className={`p-2 rounded-md transition-colors ${
                   view === 'list' ? 'bg-primary-200 text-white' : 'text-gray-500 hover:bg-gray-100'
                 }`}
-                onClick={() => setView('list')}
+                onClick={() => {
+                  setView('list');
+                }}
                 aria-label="List view"
               >
                 <Rows3 className="h-5 w-5" />

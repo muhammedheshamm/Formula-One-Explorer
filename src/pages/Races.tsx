@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useRaces } from '../hooks/useFormulaOne';
 import type { Race } from '../types/formulaOne';
@@ -15,10 +15,25 @@ const pinnedRacesKey = 'pinnedRaces';
 
 export default function Races() {
   const { season: seasonParam } = useParams<{ season: string }>();
-
-  const [page, setPage] = useState(1);
-  const [view, setView] = useState<'grid' | 'list'>('grid');
+  const [searchParams, setSearchParams] = useSearchParams();
+  
+  // Get initial values from URL parameters or use defaults
+  const initialPage = parseInt(searchParams.get('page') || '1');
+  const initialView = (searchParams.get('view') as 'grid' | 'list') || 'grid';
+  
+  const [page, setPage] = useState(initialPage);
+  const [view, setView] = useState<'grid' | 'list'>(initialView);
   const [pinnedRaces, setPinnedRaces] = useState<Race[]>([]);
+  
+  // Update URL when page or view changes
+  useEffect(() => {
+    setSearchParams(prev => {
+      const newParams = new URLSearchParams(prev);
+      newParams.set('page', page.toString());
+      newParams.set('view', view);
+      return newParams;
+    });
+  }, [page, view, setSearchParams]);
 
   const { data, isLoading, isError } = useRaces({
     season: seasonParam || '',
@@ -113,7 +128,9 @@ export default function Races() {
                 className={`p-2 rounded-md transition-colors ${
                   view === 'grid' ? 'bg-primary-200 text-white' : 'text-gray-500 hover:bg-gray-100'
                 }`}
-                onClick={() => setView('grid')}
+                onClick={() => {
+                  setView('grid');
+                }}
                 aria-label="Grid view"
               >
                 <LayoutGrid className="h-5 w-5" />
@@ -122,7 +139,9 @@ export default function Races() {
                 className={`p-2 rounded-md transition-colors ${
                   view === 'list' ? 'bg-primary-200 text-white' : 'text-gray-500 hover:bg-gray-100'
                 }`}
-                onClick={() => setView('list')}
+                onClick={() => {
+                  setView('list');
+                }}
                 aria-label="List view"
               >
                 <Rows3 className="h-5 w-5" />
