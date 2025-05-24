@@ -37,6 +37,7 @@ export const HeroSection = () => {
           variant="outline"
           className="text-white border-white bg-transparent rounded-full hover:bg-primary-200 hover:text-white mt-10 px-10 py-6 text-base"
           size="lg"
+          aria-label="Explore Seasons"
           onClick={scrollToSeasons}
         >
           <span className="flex items-center">
