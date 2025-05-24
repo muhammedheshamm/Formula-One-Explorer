@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Crown, Search } from 'lucide-react';
+import { Crown, Search, Car } from 'lucide-react';
 import type { RaceResult } from '../types/formulaOne';
 
 interface ParticipatingDriversProps {
@@ -41,7 +41,10 @@ export const ParticipatingDrivers = ({ results }: ParticipatingDriversProps) => 
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4">Participating Drivers</h2>
+      <div className="flex items-center mb-4">
+        <Car className="h-6 w-6 stroke-1 text-primary-200 mr-2" />
+        <h2 className="text-2xl font-bold">Participating Drivers</h2>
+      </div>
 
       <div className="relative">
         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
