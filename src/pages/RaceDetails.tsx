@@ -62,7 +62,10 @@ export default function RaceDetails() {
 
             {/* Winner information */}
             {results && results.length > 0 && (
-              <div className="mt-4 flex items-center bg-white rounded-lg p-4 border border-gray-100">
+              <div
+                data-testid="winner-card"
+                className="mt-4 flex items-center bg-white rounded-lg p-4 border border-gray-100"
+              >
                 <div className="mr-3">
                   <Crown className="h-8 w-8 text-yellow-500" />
                 </div>
@@ -81,9 +84,11 @@ export default function RaceDetails() {
           </div>
 
           <div className="border-b border-gray-200">
-            <nav className="-mb-px flex overflow-x-auto scrollbar-hidden">
+            <nav className="-mb-px flex overflow-x-auto scrollbar-hidden" role="tablist">
               <button
                 onClick={() => setActiveTab('drivers')}
+                role="tab"
+                aria-selected={activeTab === 'drivers'}
                 className={`${
                   activeTab === 'drivers'
                     ? 'border-primary-200 text-primary-200'
@@ -94,6 +99,8 @@ export default function RaceDetails() {
               </button>
               <button
                 onClick={() => setActiveTab('performance')}
+                role="tab"
+                aria-selected={activeTab === 'performance'}
                 className={`${
                   activeTab === 'performance'
                     ? 'border-primary-200 text-primary-200'
