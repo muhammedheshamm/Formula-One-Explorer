@@ -22,7 +22,7 @@ export const HeroSection = () => {
         }}
       />
 
-      <div className="relative z-10 text-white container mb-40">
+      <div className="relative z-10 text-white container mb-20 md:mb-40">
         <p className="text-5xl md:text-7xl font-bold">
           FEEL THE <span className="text-primary-200">SPEED</span>
         </p>
