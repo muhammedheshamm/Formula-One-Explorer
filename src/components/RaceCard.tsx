@@ -12,7 +12,7 @@ export const RaceCard = ({ race, togglePinRace, isRacePinned }: RaceCardProps) =
   return (
     <div
       data-testid="race-card"
-      className={`group relative rounded-xl bg-white shadow-sm hover:shadow-md transform hover:-translate-y-1 transition-shadow transition-transform ${
+      className={`group relative rounded-xl bg-white shadow-sm hover:shadow-md transform hover:-translate-y-1 transition-transform ${
         isRacePinned(race) ? 'border border-primary-200' : 'border border-gray-200'
       }`}
     >
